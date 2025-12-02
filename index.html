@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<title>Part C Activity – Web Interactivity Demo</title>
+
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background: #f2f2f2;
+        padding: 30px;
+        text-align: center;
+        background: linear-gradient(45deg red,  yellow);
+    }
+
+
+
+    h1 {
+        color: #333;
+        margin-bottom: 20px;
+    }
+
+    /* -----------------------
+       Reusable button styles
+       ----------------------- */
+    .btn {
+        display: inline-block;
+        padding: 10px 14px;
+        background: #2e86de;
+        color: #fff;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 14px;
+        margin: 6px;
+        transition: background .15s ease, transform .06s ease;
+    }
+    .btn:hover { background: #1e61b1; transform: translateY(-2px); }
+    .btn:active { transform: translateY(0); }
+    .btn.secondary { background: #7f8c8d; }
+
+    /* ----------------------------------------------------
+         CSS TRANSITIONS
+    -----------------------------------------------------*/
+    .transition-box {
+        width: 150px;
+        height: 150px;
+        background: #3498db;
+        margin: 20px auto;
+        border-radius: 12px;
+        transition: 
+            transform 1s ease,
+            background 1s ease;
+    }
+    
+
+    /* ----------------------------------------------------
+        CSS KEYFRAME ANIMATION
+    -----------------------------------------------------*/
+    .animation-box {
+        width: 150px;
+        height: 150px;
+        margin: 25px auto;
+        background: #28b463;
+        border-radius: 12px;
+        animation: pulse 2s infinite ease-in-out;
+        cursor: pointer;
+    }
+
+    @keyframes pulse {
+        0%   { transform: scale(0.50); }
+        50%  { transform: scale(1); }
+        100% { transform: scale(0.50); }
+     }
+    /* Canvas + container style */
+    #canvasBox {
+        margin: 30px auto;
+        border: 3px solid #555;
+        width: fit-content;
+        padding: 12px;
+        background: white;
+    }
+
+    #message {
+        font-size: 17px;
+        margin-top: 15px;
+        color: #444;
+    }
+
+
+</style>
+</head>
+
+<body>
+
+<h1>PART C — Example of SVG, Canvas, Transitions & Keyframes</h1>
+
+<p>Click, hover, double click or press buttons to see behaviors.</p>
+
+<!-- ==================== SVG EXAMPLE ====================== -->
+<svg width="300" height="300">
+    <circle 
+        id="svgCircle"
+        cx="150"
+        cy="150"
+        r="60"
+        fill="white"
+        stroke="#333"
+        stroke-width="4"
+    />
+</svg>
+
+<br>
+<p id="message">Try interacting with the shapes.</p>
+
+<hr>
+
+<!-- ==================== CANVAS ====================== -->
+<div id="canvasBox">
+    <canvas id="canvas" width="300" height="200"></canvas>
+</div>
+
+<button id="drawRectBtn" class="btn">Draw Rectangle</button>
+<button id="drawCircleBtn" class="btn">Draw Circle</button>
+
+<hr>
+
+<!-- ==================== TRANSITION BOX ====================== -->
+<div class="transition-box" id="box"></div>
+<button onclick="animateBox()" class="btn">Animate Box</button>
+
+<hr>
+
+<!-- ==================== ANIMATED KEYFRAME BOX ====================== -->
+<p>Click the green box to pause/resume animation</p>
+<div class="animation-box" id="keyBox"></div>
+
+<button id="clear" class="btn">Reset</button>
+<button id="resetAllBtn" class="btn secondary">Reset All</button>
+
+    <script>
+/* =========================================================
+             SVG Interaction Example
+=========================================================*/
+const circle = document.getElementById("svgCircle");
+const msg = document.getElementById("message");
+
+circle.addEventListener("click", () => {
+    msg.textContent = "You CLICKED the SVG Circle!";
+    circle.style.fill = "#f1c40f";
+});
+
+circle.addEventListener("dblclick", () => {
+    msg.textContent = "You DOUBLE-CLICKED the SVG Circle. Size enlarged!";
+    circle.setAttribute("r", 90);
+});
+
+circle.addEventListener("mouseenter", () => {
+    circle.style.stroke = "#16a085";
+});
+
+circle.addEventListener("mouseleave", () => {
+    msg.textContent = "SVG returned to default appearance.";
+    circle.style.stroke = "#333";
+    circle.setAttribute("r", 60);
+});
+
+/* =========================================================
+            CANVAS Drawing Example
+=========================================================*/
+const canvas = document.getElementById("canvas");
+const pen = canvas.getContext("2d");
+
+document.getElementById("drawRectBtn").onclick = () => {
+    pen.fillStyle = "#9b59b6";
+    pen.fillRect(20, 20, 120, 80);
+    msg.textContent = "Canvas Rectangle Drawn!";
+};
+
+document.getElementById("drawCircleBtn").onclick = () => {
+    pen.beginPath();
+    pen.arc(220, 100, 40, 0, Math.PI * 2);
+    pen.fillStyle = "#2ecc71";
+    pen.fill();
+    msg.textContent = "Canvas Circle Drawn!";
+};
+
+const box = document.getElementById("box");
+function animateBox() {
+    box.style.transform = "rotate(360deg) scale(1.4)";
+    box.style.background = "#1abc9c";
+}
+
+const keyBox = document.getElementById("keyBox");
+let paused = false;
+
+keyBox.onclick = () => {
+    if (!paused) {
+        keyBox.style.animationPlayState = "paused";
+        msg.textContent = "Animation Paused!";
+        paused = true;
+    } else {
+        keyBox.style.animationPlayState = "running";
+        msg.textContent = "Animation Resumed!";
+        paused = false;
+    }
+};
+
+    function reset()    {
+            ['quiz1','quiz2','quiz3','quiz4'].forEach(id => document.getElementById(id).value = '');
+    document.getElementById('quizResult').innerText = '';
+    }
+</script>
+
+</body>
+</html>
